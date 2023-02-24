@@ -33,10 +33,29 @@ talker.post(
     const talkersData = await fs.readFile(filePath);
     const talkerNewId = talkersData[talkersData.length - 1].id + 1;
     const newTalker = { id: talkerNewId, ...req.body };
+    const newTalkersData = [...talkersData, newTalker];
 
-    await fs.writeFile(filePath, newTalker);
+    console.log(newTalkersData);
+
+    await fs.writeFile(filePath, newTalkersData);
 
     return res.status(201).json(newTalker); 
+  },
+);
+
+talker.put(
+  '/:id',
+  middlewares.validateToken,
+  middlewares.validatePersonalInfo,
+  middlewares.validateTalk,
+  middlewares.validateUpdate,
+  async (req, res) => {
+    const { id } = req.params;
+    const updateTalker = { id: Number(id), ...req.body };
+
+    fs.updateFile(filePath, id, updateTalker);
+
+    return res.status(200).json(updateTalker); 
   },
 );
 
