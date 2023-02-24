@@ -4,7 +4,7 @@ const generateToken = require('../utils/tokenGenerator');
 const login = express.Router();
 
 login.post('/', (req, res) => {
-  const { email, password } = req.body;
+  // const { email, password } = req.body;
 
   const token = generateToken(16);
 
