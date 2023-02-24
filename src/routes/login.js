@@ -1,12 +1,11 @@
 const express = require('express');
-const generateToken = require('../utils/tokenGenerator');
+const middlewares = require('../middlewares');
+const utils = require('../utils');
 
 const login = express.Router();
 
-login.post('/', (req, res) => {
-  // const { email, password } = req.body;
-
-  const token = generateToken(16);
+login.post('/', middlewares.validateLogin, (_req, res) => {
+  const token = utils.tokenGenerator(16);
 
   res.status(200).json({ token });
 });
