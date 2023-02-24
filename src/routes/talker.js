@@ -6,11 +6,6 @@ const talker = express.Router();
 
 const filePath = '../talker.json';
 
-talker.get('/', async (_req, res) => {
-  const talkersData = await fs.readFile(filePath);
-  return res.status(200).json(talkersData);
-});
-
 talker.get(
   '/search',
   middlewares.validateToken,
@@ -28,6 +23,11 @@ talker.get(
     return res.status(200).json(talkersData);
   },
 );
+
+talker.get('/', async (_req, res) => {
+  const talkersData = await fs.readFile(filePath);
+  return res.status(200).json(talkersData);
+});
 
 talker.get('/:id', async (req, res) => {
   const { id } = req.params;
