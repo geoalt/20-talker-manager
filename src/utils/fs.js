@@ -14,6 +14,18 @@ const readFile = async (filePath) => {
   }
 };
 
+const writeFile = async (filePath, content) => {
+  try {
+    const data = await readFile(filePath);
+    const newData = [...data, content];
+
+    await fs.writeFile(path.resolve(__dirname, filePath), JSON.stringify(newData, null, 2));
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
 module.exports = {
   readFile,
+  writeFile,
 };
