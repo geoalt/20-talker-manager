@@ -16,10 +16,25 @@ const readFile = async (filePath) => {
 
 const writeFile = async (filePath, content) => {
   try {
-    const data = await readFile(filePath);
-    const newData = [...data, content];
+    await fs.writeFile(path.resolve(__dirname, filePath), JSON.stringify(content, null, 2));
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
-    await fs.writeFile(path.resolve(__dirname, filePath), JSON.stringify(newData, null, 2));
+const updateFile = async (filePath, talkerId, content) => {
+  try {
+    const data = await readFile(filePath);
+
+    const updatedData = data.reduce((newData, currentTalker) => {
+      if (currentTalker.id === Number(talkerId)) {
+        return [...newData, { ...currentTalker, ...content }];
+      }
+
+      return [...newData, currentTalker];
+    }, []);
+
+    writeFile(filePath, updatedData);
   } catch (err) {
     console.error(err.message);
   }
@@ -28,4 +43,5 @@ const writeFile = async (filePath, content) => {
 module.exports = {
   readFile,
   writeFile,
+  updateFile,
 };
