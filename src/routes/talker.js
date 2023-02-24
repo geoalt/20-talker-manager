@@ -11,6 +11,24 @@ talker.get('/', async (_req, res) => {
   return res.status(200).json(talkersData);
 });
 
+talker.get(
+  '/search',
+  middlewares.validateToken,
+  async (req, res) => {
+    const { q } = req.query;
+    const talkersData = await fs.readFile(filePath);
+
+    if (q) {
+      const filteredTalkerData = talkersData
+        .filter(({ name }) => name.toLowerCase().includes(q.toLowerCase()));
+
+      return res.status(200).json(filteredTalkerData);
+    }
+
+    return res.status(200).json(talkersData);
+  },
+);
+
 talker.get('/:id', async (req, res) => {
   const { id } = req.params;
   const talkersData = await fs.readFile(filePath);
