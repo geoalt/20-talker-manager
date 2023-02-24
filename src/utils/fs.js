@@ -40,8 +40,20 @@ const updateFile = async (filePath, talkerId, content) => {
   }
 };
 
+const deleteTalker = async (filePath, talkerId) => {
+  try {
+    const data = await readFile(filePath);
+    const updatedData = data.filter((it) => it.id !== Number(talkerId));
+
+    writeFile(filePath, updatedData);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
 module.exports = {
   readFile,
   writeFile,
   updateFile,
+  deleteTalker,
 };
