@@ -49,13 +49,25 @@ talker.put(
   middlewares.validatePersonalInfo,
   middlewares.validateTalk,
   middlewares.validateUpdate,
-  async (req, res) => {
+  (req, res) => {
     const { id } = req.params;
     const updateTalker = { id: Number(id), ...req.body };
 
     fs.updateFile(filePath, id, updateTalker);
 
     return res.status(200).json(updateTalker); 
+  },
+);
+
+talker.delete(
+  '/:id',
+  middlewares.validateToken,
+  (req, res) => {
+    const { id } = req.params;
+
+    fs.deleteTalker(filePath, id);
+
+    return res.sendStatus(204);
   },
 );
 
